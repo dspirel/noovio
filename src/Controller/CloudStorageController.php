@@ -14,10 +14,11 @@ use function Symfony\Component\Clock\now;
 
 final class CloudStorageController extends AbstractController
 {
-    #[Route('/', name: 'app_cloud_storage')]
+    #[Route('/', name: 'home')]
     public function home(): Response
     {
-        return $this->render('index');
+        $user = $this->getUser()->getUserIdentifier();
+        return $this->render('cloud_storage/index.html.twig', ['user' => $user]);
     }
 
     #[Route('/storage/getSignedUrls', name: 'app_cloud_storage')]
