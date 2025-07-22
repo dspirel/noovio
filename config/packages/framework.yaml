@@ -3,8 +3,8 @@ framework:
     secret: '%env(APP_SECRET)%'
 
     session:
-        handler_id: null
-        save_path: '/tmp'
+        handler_id: session.handler.native_file
+        save_path: '/tmp/sessions'
         cookie_secure: auto
         cookie_samesite: lax
 
