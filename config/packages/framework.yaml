@@ -4,7 +4,7 @@ framework:
 
     session:
         handler_id: null
-        save_path: '/tmp/sessions/%kernel.environment%'
+        save_path: '/tmp'
         cookie_secure: auto
         cookie_samesite: lax
 
