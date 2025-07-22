@@ -17,8 +17,11 @@ final class CloudStorageController extends AbstractController
     #[Route('/', name: 'home')]
     public function home(): Response
     {
-        $user = $this->getUser()->getUserIdentifier();
-        return $this->render('cloud_storage/index.html.twig', ['user' => $user]);
+        $user = $this->getUser();
+        if ($user) {
+            $username = $user->getUserIdentifier();
+        }
+        return $this->render('cloud_storage/index.html.twig', ['user' => $username]);
     }
 
     #[Route('/storage/getSignedUrls', name: 'app_cloud_storage')]
