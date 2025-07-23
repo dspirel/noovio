@@ -11,7 +11,30 @@
             {% block importmap %}{{ importmap('app') }}{% endblock %}
         {% endblock %}
     </head>
-    <body>
+    <body class="bg-primary">
+        {# Navbar #}
+        <nav class="navbar navbar-dark bg-dark shadow-sm">
+        <div class="container d-flex justify-content-between align-items-center">
+
+            {# Left side: Brand + Links #}
+            <div class="d-flex align-items-center gap-3">
+            <a class="navbar-brand mb-0 h1" href="{{ path('app_home') }}">Noovio Workspace</a>
+
+            {% if app.user %}
+                <a class="btn btn-outline-light" href="{{ path('app_logout') }}">Dashboard</a>
+            {% endif %}
+            </div>
+
+            {# Right side: Auth Links #}
+            <div>
+            {% if app.user %}
+                <a class="btn btn-outline-light" href="{{ path('app_logout') }}">Logout</a>
+            {% endif %}
+            </div>
+
+        </div>
+        </nav>
+        {# Main content area #}
         {% block body %}{% endblock %}
     </body>
 </html>
