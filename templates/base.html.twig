@@ -20,6 +20,11 @@
             <div class="d-flex align-items-center gap-3">
             <a class="navbar-brand mb-0 h1" href="{{ path('app_home') }}">Noovio Workspace</a>
 
+            {% if is_granted('ROLE_ADMIN') %}
+                <a class="btn btn-outline-light" href="{{ path('app_add_user') }}">Add User</a>
+                <a class="btn btn-outline-light" href="{{ path('app_manage_users') }}">Manage Users</a>
+            {% endif %}
+
             {% if app.user %}
                 <a class="btn btn-outline-light" href="{{ path('app_logout') }}">Dashboard</a>
             {% endif %}

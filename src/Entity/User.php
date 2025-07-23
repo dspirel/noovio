@@ -34,12 +34,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?string $password = null;
 
-    public function getFacebookIdentifer(): ?string
+    public function getFacebookIdentifier(): ?string
     {
         return $this->facebookIdentifier;
     }
 
-    public function setFacebookIdentifer(string $facebookIdentifier): static
+    public function setFacebookIdentifier(string $facebookIdentifier): static
     {
         $this->facebookIdentifier = $facebookIdentifier;
 
