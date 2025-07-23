@@ -22,7 +22,7 @@
 
             {% if is_granted('ROLE_ADMIN') %}
                 <a class="btn btn-outline-light" href="{{ path('app_add_user') }}">Add User</a>
-                <a class="btn btn-outline-light" href="{{ path('app_manage_users') }}">Manage Users</a>
+                <a class="btn btn-outline-light" href="{{ path('app_user_index') }}">Manage Users</a>
             {% endif %}
 
             {% if app.user %}

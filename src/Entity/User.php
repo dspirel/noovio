@@ -22,6 +22,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(length: 180)]
     private ?string $facebookIdentifier = null;
+
     /**
      * @var list<string> The user roles
      */

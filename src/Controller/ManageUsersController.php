@@ -14,7 +14,7 @@ use Symfony\Component\Routing\Attribute\Route;
 
 final class ManageUsersController extends AbstractController
 {
-    #[Route('/admin/manage/users', name: 'app_manage_users', methods: ['GET'])]
+    #[Route('/aadmin/manage/users', name: 'app_manage_users', methods: ['GET'])]
     public function index(Request $request, EntityManagerInterface $entityManager): Response
     {
         $users = $entityManager->getRepository(User::class)
@@ -29,7 +29,7 @@ final class ManageUsersController extends AbstractController
         ]);
     }
 
-    #[Route('/admin/delete/user/{id}', name: 'app_delete_user', methods: ['GET'])]
+    #[Route('/aadmin/delete/user/{id}', name: 'app_delete_user', methods: ['GET'])]
     public function delete(Request $request, EntityManagerInterface $entityManager, int $id): Response
     {
         $user = $entityManager->getRepository(User::class)->find($id);
@@ -40,7 +40,7 @@ final class ManageUsersController extends AbstractController
         return $this->render('home/index.html.twig');
     }
 
-    #[Route('/admin/user/{id}', name: 'admin_user_edit', methods: ['GET', 'POST'])]
+    #[Route('/aadmin/user/{id}', name: 'admin_user_edit', methods: ['GET', 'POST'])]
     public function show(
         Request $request,
         EntityManagerInterface $entityManager,
@@ -57,7 +57,6 @@ final class ManageUsersController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            // Hash password if a new one is provided
             if ($form->get('password')->getData()) {
                 $plainPassword = $form->get('password')->getData();
                 if (!empty($plainPassword)) {
@@ -70,7 +69,7 @@ final class ManageUsersController extends AbstractController
             $entityManager->persist($user);
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_manage_users'); // adjust to your actual route
+            return $this->redirectToRoute('app_manage_users');
         }
 
         return $this->render('manage_users/edit.html.twig', [

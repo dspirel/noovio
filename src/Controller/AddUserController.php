@@ -27,21 +27,12 @@ final class AddUserController extends AbstractController
             $plainPassword = $newUser->getPassword();
             $hashedPassword = $passwordHasher->hashPassword($newUser, $plainPassword);
             $newUser->setPassword($hashedPassword);
-            //$newUser->setFacebookIdentifer('test');
 
             $entityManager->persist($newUser);
             $entityManager->flush();
 
-            // ... perform some action, such as saving the task to the database
-
             return $this->redirectToRoute('app_home');
         }
-
-        // $noovio = $entityManager->getRepository(User::class)->findOneByUsername('noovio');
-        // $noovio->setRoles(['ROLE_ADMIN']);
-
-        // $entityManager->persist($noovio);
-        // $entityManager->flush();
 
         return $this->render('add_user/index.html.twig', [
             'form' => $form,
