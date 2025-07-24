@@ -22,13 +22,13 @@ final class CloudStorageController extends AbstractController
         #[MapQueryParameter] ?string $fileExtension = 'jpg',
         ): JsonResponse
     {
-        $files = $googleCloudStorageService->listFiles($folderName, $fileExtension);
+        $files = $googleCloudStorageService->listFilesWithExtension($folderName, $fileExtension);
         $urls = [];
 
         $urlExpiration = now('+1 hours');
 
         foreach ($files as $file) {
-            $urls[] = $googleCloudStorageService->getSignedUrl('gcstorage-n8n',$file, $urlExpiration);
+            $urls[] = $googleCloudStorageService->getSignedUrl($file, $urlExpiration);
         }
 
         $formattedUrls = array_map(
@@ -38,4 +38,5 @@ final class CloudStorageController extends AbstractController
 
         return $this->json($formattedUrls);
     }
+
 }
