@@ -26,6 +26,7 @@ class SendScheduledWebhooksCommand extends Command
     protected function configure(): void
     {
         $this
+            ->setName('app:send-scheduled-webhooks')
             ->setDescription('Sends scheduled webhooks that are due.')
             ->addOption('loop', null, InputOption::VALUE_NONE, 'Run the command in a continuous loop');
     }
