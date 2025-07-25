@@ -19,8 +19,14 @@ final class UserController extends AbstractController
     #[Route(name: 'app_user_index', methods: ['GET'])]
     public function index(UserRepository $userRepository): Response
     {
+        $users = $userRepository->createQueryBuilder('u')
+            ->where('u.username != :excludedUsername')
+            ->setParameter('excludedUsername', 'noovio')
+            ->getQuery()
+            ->getResult();
+
         return $this->render('user/index.html.twig', [
-            'users' => $userRepository->findAll(),
+            'users' => $users,
         ]);
     }
 

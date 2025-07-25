@@ -3,4 +3,5 @@
     <div>
     <button class="btn btn-danger btn-bg">Delete</button>
     </div>
+    <input type="hidden" name="_csrf_token" data-controller="csrf-protection" value="{{ csrf_token('authenticate') }}">
 </form>
