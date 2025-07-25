@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\WebhookSchedule;
 use App\Form\ScheduledWebhookType;
+use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -32,6 +33,18 @@ class ScheduledWebhookController extends AbstractController
 
         return $this->render('scheduled_webhook/new.html.twig', [
             'form' => $form->createView(),
+        ]);
+    }
+
+    #[Route('/scheduled-webhooks', name: 'scheduled_webhook_index')]
+    #[IsGranted('ROLE_USER')]
+    public function index(UserRepository $userRepository): Response
+    {
+        $userSecurity = $this->getUser()->getUserIdentifier();
+        $webhooks = $userRepository->findOneByUsername($userSecurity)->getWebhookSchedules();
+
+        return $this->render('scheduled_webhook/index.html.twig', [
+            'webhooks' => $webhooks,
         ]);
     }
 }

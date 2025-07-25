@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Your Scheduled Webhooks</h1>
+
+    {% if webhooks is empty %}
+        <p>You have no scheduled webhooks.</p>
+    {% else %}
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Cron Expression</th>
+                    <th>Webhook URL</th>
+                    <th>Next Run Time</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for webhook in webhooks %}
+                    <tr>
+                        <td>{{ webhook.id }}</td>
+                        <td>{{ webhook.cronExpression }}</td>
+                        <td>{{ webhook.webhookUrl }}</td>
+                        <td>{{ webhook.nextRunTime|date('Y-m-d H:i:s') }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
+
+    <a href="{{ path('scheduled_webhook_new') }}">Create new scheduled webhook</a>
+{% endblock %}
