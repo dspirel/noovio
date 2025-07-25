@@ -14,7 +14,7 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 class ScheduledWebhookController extends AbstractController
 {
-    #[Route('/scheduled-webhook/new', name: 'scheduled_webhook_new')]
+    #[Route('/scheduled-webhook/new', name: 'scheduled_webhook_new', methods: ['GET', 'POST'])]
     #[IsGranted('ROLE_USER')]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
@@ -28,7 +28,7 @@ class ScheduledWebhookController extends AbstractController
             $entityManager->persist($scheduledWebhook);
             $entityManager->flush();
 
-            return $this->redirectToRoute('homepage'); // Adjust as needed
+            return $this->redirectToRoute('scheduled_webhook_index'); // Adjust as needed
         }
 
         return $this->render('scheduled_webhook/new.html.twig', [
