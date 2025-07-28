@@ -47,7 +47,9 @@ class FacebookPostScheduleType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'images' => []
+            'data_class' => null,
+            'images' => [],
+            'allow_extra_fields' => true
         ]);
     }
 }
