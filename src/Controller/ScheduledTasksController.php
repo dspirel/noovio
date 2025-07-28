@@ -37,7 +37,6 @@ final class ScheduledTasksController extends AbstractController
         $form = $this->createForm(FacebookPostScheduleType::class, null,[
             'images' => $images
         ]);
-        dd($form->getConfig()->getDataClass());
 
         $form->handleRequest($request);
 
