@@ -1,0 +1,24 @@
+App\Entity\User:
+    properties:
+        username:
+            - NotBlank: ~
+            - Length:
+                min: 4
+                minMessage: 'Username must be at least {{ limit }} characters.'
+        facebookIdentifier:
+            - NotBlank: ~
+        password:
+            - Length:
+                min: 6
+                minMessage: 'Password must be at least {{ limit }} characters.'
+App\Form\FacebookPostScheduleType:
+    properties:
+        facebook_page:
+            - NotBlank:
+                message: 'Cannot be empty.'
+        ai_prompt:
+            - NotBlank:
+                message: 'Cannot be empty.'
+        images:
+            - NotBlank:
+                message: 'Please select at least one image.'

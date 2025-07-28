@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Scheduled Task{% endblock %}
+
+{% block body %}
+<div class="d-flex justify-content-center align-items-center vh-100">
+    <div class="card p-4 shadow login-card" style="min-width: 300px; width: 100%; max-width: 400px;">
+        <h1>Schedule Facebook Post</h1>
+        {{ form_start(form) }}
+        {{ form_errors(form) }}
+
+        {% for imageField in form.images %}
+            <label class="image-checkbox-label">
+                {{ form_widget(imageField) }}
+                <img src="{{ imageField.vars.attr['data-image-url'] }}" class="image-checkbox-preview" style="max-width: 120px; max-height: 120px;" />
+            </label>
+        {% endfor %}
+
+        <button type="submit">Save</button>
+        {{ form_end(form) }}
+    </div>
+</div>
+{% endblock %}

@@ -26,6 +26,13 @@ class FileManagerController extends AbstractController
     #[Route('/my-files/delete', name: 'delete_file', methods: ['POST'])]
     public function deleteFile(Request $request, GoogleCloudStorageService $gcs): RedirectResponse
     {
+        if ($request->isMethod('POST')) {
+            $token = $request->request->get('_csrf_token');
+            if (!$this->isCsrfTokenValid('authenticate', $token)) {
+                throw $this->createAccessDeniedException('Invalid CSRF token');
+            }
+        }
+
         $filePath = $request->request->get('file');
         $userName = $this->getUser()->getUserIdentifier();
 
@@ -39,6 +46,13 @@ class FileManagerController extends AbstractController
     #[Route('/upload', name: 'file_upload', methods: ['GET', 'POST'])]
     public function upload(Request $request, GoogleCloudStorageService $gcs): Response
     {
+        if ($request->isMethod('POST')) {
+            $token = $request->request->get('_csrf_token');
+            if (!$this->isCsrfTokenValid('authenticate', $token)) {
+                throw $this->createAccessDeniedException('Invalid CSRF token');
+            }
+        }
+
         $username = $this->getUser()->getUserIdentifier();
 
         $allowedMimeTypes = ['image/jpeg', 'image/jpg', 'application/pdf'];

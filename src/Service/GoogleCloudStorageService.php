@@ -23,7 +23,7 @@ class GoogleCloudStorageService
     {
         $bucket = $this->storage->bucket($this->bucketName);
         $objects = $bucket->objects(['prefix' => "$userId/"]);
-        $urlExpiration = now('+10 minutes');
+        $urlExpiration = now('+30 minutes');
 
         $files = [];
         foreach ($objects as $object) {
@@ -31,6 +31,26 @@ class GoogleCloudStorageService
                 'name' => $object->name(),
                 'url' => $this->getSignedUrl($object->name(), $urlExpiration),
             ];
+        }
+
+        return $files;
+    }
+
+    public function listUserImages(string $userId): array
+    {
+        $bucket = $this->storage->bucket($this->bucketName);
+        $objects = $bucket->objects(['prefix' => "$userId/"]);
+        $urlExpiration = now('+30 minutes');
+
+        $files = [];
+        foreach ($objects as $object) {
+            if (str_ends_with(strtolower($object->name()), '.jpg') ||
+                str_ends_with(strtolower($object->name()), '.jpeg')) {
+                $files[] = [
+                    'name' => $object->name(),
+                    'url' => $this->getSignedUrl($object->name(), $urlExpiration),
+                    ];
+                }
         }
 
         return $files;

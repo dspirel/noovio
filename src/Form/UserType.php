@@ -19,24 +19,20 @@ class UserType extends AbstractType
     {
         $isEdit = $options['is_edit'] ?? false;
         $builder
-            ->add('username', TextType::class, [
+            ->add('username', TextType::class,  [
                 'label_attr' => ['class' => 'form-label text-center', 'for' => 'username'],
                 'attr' => ['class' => 'form-control']
             ])
-            ->add('facebookIdentifier', TextType::class, [
-                'constraints' => [
-                    new NotBlank(),
-                    new Length(min: 3)
-                    ],
-                'label_attr' => ['class' => 'form-label text-center', 'for' => 'username'],
+            ->add('facebook_identifier', TextType::class, [
+                'label_attr' => ['class' => 'form-label text-center', 'for' => 'facebook_identifier'],
                 'attr' => ['class' => 'form-control']
             ])
             ->add('roles', ChoiceType::class, [
                 'choices' => [
                     'Marketing' => 'ROLE_MARKETING',
                 ],
-                'multiple' => true,   // Because roles is an array
-                'expanded' => true,   // Optional: shows checkboxes instead of a multiselect
+                'multiple' => true,
+                'expanded' => true,
                 'label' => 'Roles',
             ])
             ->add('password', PasswordType::class, [

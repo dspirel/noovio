@@ -1,5 +1,7 @@
 # see https://symfony.com/doc/current/reference/configuration/framework.html
 framework:
+    validation:
+        enabled: true
     secret: '%env(APP_SECRET)%'
     form:
         csrf_protection:
