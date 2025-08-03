@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20250725091448 extends AbstractMigration
+final class Version20250729070824 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -20,8 +20,9 @@ final class Version20250725091448 extends AbstractMigration
     public function up(Schema $schema): void
     {
         // this up() migration is auto-generated, please modify it to your needs
-        $this->addSql('CREATE TABLE webhook_schedule (id SERIAL NOT NULL, owner_id INT NOT NULL, cron_expression VARCHAR(255) NOT NULL, webhook_url VARCHAR(255) NOT NULL, json_data TEXT NOT NULL, next_run_time TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, PRIMARY KEY(id))');
+        $this->addSql('CREATE TABLE webhook_schedule (id SERIAL NOT NULL, owner_id INT NOT NULL, name VARCHAR(255) NOT NULL, data JSON NOT NULL, next_run_at TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, PRIMARY KEY(id))');
         $this->addSql('CREATE INDEX IDX_A4C297D37E3C61F9 ON webhook_schedule (owner_id)');
+        $this->addSql('COMMENT ON COLUMN webhook_schedule.next_run_at IS \'(DC2Type:datetime_immutable)\'');
         $this->addSql('ALTER TABLE webhook_schedule ADD CONSTRAINT FK_A4C297D37E3C61F9 FOREIGN KEY (owner_id) REFERENCES "user" (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
     }
 

@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}TaskSchedule index{% endblock %}
+
+{% block body %}
+    <h1>TaskSchedule index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Next Run At</th>
+                <th>Repeat Every # Days</th>
+                <th>Target Platform</th>
+                <th>Facebook Page</th>
+                <th>Instagram Page</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for task_schedule in task_schedules %}
+            <tr>
+                <td>{{ task_schedule.name }}</td>
+                <td>{{ task_schedule.nextRunAt ? task_schedule.nextRunAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ task_schedule.repeatEvery ? task_schedule.repeatEvery.d : '' }}</td>
+                <td>{{ task_schedule.targetPlatform }}</td>
+                <td>{{ task_schedule.facebookPage }}</td>
+                <td>{{ task_schedule.instagramPage }}</td>
+                <td>
+                    <a href="{{ path('app_task_schedule_show', {'id': task_schedule.id}) }}">show</a>
+                    <a href="{{ path('app_task_schedule_edit', {'id': task_schedule.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="8">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_task_schedule_new') }}">Create new</a>
+{% endblock %}

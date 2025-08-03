@@ -1,0 +1,46 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}TaskPost{% endblock %}
+
+{% block body %}
+    <h1>TaskPost</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ task_post.id }}</td>
+            </tr>
+            <tr>
+                <th>Name</th>
+                <td>{{ task_post.name }}</td>
+            </tr>
+            <tr>
+                <th>Title</th>
+                <td>{{ task_post.title }}</td>
+            </tr>
+            <tr>
+                <th>Status</th>
+                <td>{{ task_post.status ? 'Yes' : 'No' }}</td>
+            </tr>
+            <tr>
+                <th>Posted</th>
+                <td>{{ task_post.posted ? 'Yes' : 'No' }}</td>
+            </tr>
+            <tr>
+                <th>PostText</th>
+                <td>{{ task_post.postText }}</td>
+            </tr>
+            <tr>
+                <th>MediaUrls</th>
+                <td>{{ task_post.mediaUrls ? task_post.mediaUrls|json_encode : '' }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_task_post_index') }}">back to list</a>
+
+    <a href="{{ path('app_task_post_edit', {'id': task_post.id}) }}">edit</a>
+
+    {{ include('task_post/_delete_form.html.twig') }}
+{% endblock %}

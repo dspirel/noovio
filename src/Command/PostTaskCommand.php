@@ -2,6 +2,9 @@
 
 namespace App\Command;
 
+use App\Entity\WebhookSchedule;
+use App\Repository\WebhookScheduleRepository;
+use DateInterval;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
@@ -37,11 +40,31 @@ class PostTaskCommand extends Command
     // php bin/console app:post:task
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-            $this->httpClient->request('POST', 'https://studio-vision.app.n8n.cloud/webhook-test/357299f6-534d-4a9a-9185-bdb043f5cbbf', [
+        /** @var WebhookSchedule $task */
+        $task = $this->em->getRepository(WebhookSchedule::class)->findNextRunnableTask();
+
+        if ($task){
+            $response = $this->httpClient->request('POST', 'https://studio-vision.app.n8n.cloud/webhook-test/453dc032-b809-419f-a68d-7010a366f02f', [
             'json' => [
-                'data' => 'hello',
-            ],
-        ]);
+                'data' => $task->getData()
+                ], //TODO get signed urls, remove repeatEvery,webhook url from data
+                    //replace facebookPage with token for that page
+            ]);
+        }
+        //should first confirm post, or create posts before for approval
+        // IDEA: Schedule->create post->create post->create post
+
+        if ($response->getStatusCode() == 200) {
+            $daysToAdd = $task->getData()['repeatEvery'];
+            $updatedTaskRunAt = $task->getNextRunAt()->add(new DateInterval("P{$daysToAdd}D"));
+            $task->setNextRunAt($updatedTaskRunAt);
+            $this->em->flush();
+        }
+        // $formattedDate = $updateTaskRunAt->format('Y-m-d H:i:s');
+        // $statusCode = $response->getStatusCode();
+        // $output->writeln("{$statusCode}");
         return Command::SUCCESS;
     }
+
+
 }

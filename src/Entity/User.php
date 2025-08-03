@@ -43,10 +43,24 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(targetEntity: WebhookSchedule::class, mappedBy: 'owner', orphanRemoval: true)]
     private Collection $webhookSchedules;
 
+    /**
+     * @var Collection<int, TaskSchedule>
+     */
+    #[ORM\OneToMany(targetEntity: TaskSchedule::class, mappedBy: 'owner', orphanRemoval: true)]
+    private Collection $TaskSchedule;
+
+    /**
+     * @var Collection<int, TaskPost>
+     */
+    #[ORM\OneToMany(targetEntity: TaskPost::class, mappedBy: 'owner', orphanRemoval: true)]
+    private Collection $taskPosts;
+
 
     public function __construct()
     {
         $this->webhookSchedules = new ArrayCollection();
+        $this->TaskSchedule = new ArrayCollection();
+        $this->taskPosts = new ArrayCollection();
     }
 
     public function getFacebookIdentifier(): ?string
@@ -166,6 +180,66 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             // set the owning side to null (unless already changed)
             if ($webhookSchedule->getOwner() === $this) {
                 $webhookSchedule->setOwner(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, TaskSchedule>
+     */
+    public function getTaskSchedule(): Collection
+    {
+        return $this->TaskSchedule;
+    }
+
+    public function addTaskSchedule(TaskSchedule $taskSchedule): static
+    {
+        if (!$this->TaskSchedule->contains($taskSchedule)) {
+            $this->TaskSchedule->add($taskSchedule);
+            $taskSchedule->setOwner($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTaskSchedule(TaskSchedule $taskSchedule): static
+    {
+        if ($this->TaskSchedule->removeElement($taskSchedule)) {
+            // set the owning side to null (unless already changed)
+            if ($taskSchedule->getOwner() === $this) {
+                $taskSchedule->setOwner(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, TaskPost>
+     */
+    public function getTaskPosts(): Collection
+    {
+        return $this->taskPosts;
+    }
+
+    public function addTaskPost(TaskPost $taskPost): static
+    {
+        if (!$this->taskPosts->contains($taskPost)) {
+            $this->taskPosts->add($taskPost);
+            $taskPost->setOwner($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTaskPost(TaskPost $taskPost): static
+    {
+        if ($this->taskPosts->removeElement($taskPost)) {
+            // set the owning side to null (unless already changed)
+            if ($taskPost->getOwner() === $this) {
+                $taskPost->setOwner(null);
             }
         }
 

@@ -1,0 +1,23 @@
+{{ form_start(form) }}
+
+{% for field in form %}
+    {% if field.vars.name != 'mediaUrls' %}
+        {{ form_row(field) }}
+    {% endif %}
+{% endfor %}
+
+{% if app.request.attributes.get('_route') in ['app_task_post_new', 'app_task_post_edit'] %}
+    <div class="image-select-grid">
+        {% for imageField in form.mediaUrls %}
+            <label class="image-checkbox-label">
+                {{ form_widget(imageField) }}
+                <img src="{{ imageField.vars.attr['data-image-url'] }}" class="image-checkbox-preview" style="max-width: 120px; max-height: 120px;" />
+            </label>
+        {% endfor %}
+    </div>
+{% endif %}
+
+{{ form_rest(form) }}
+
+<button class="btn">{{ button_label|default('Save') }}</button>
+{{ form_end(form) }}

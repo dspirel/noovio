@@ -2,18 +2,16 @@
 
 namespace App\Form;
 
+use App\Entity\TaskPost;
+use App\Entity\TaskSchedule;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\DateType;
-use Symfony\Component\Form\Extension\Core\Type\TimeType;
-use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 
-
-
-class FacebookPostScheduleType extends AbstractType
+class TaskPostType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
@@ -23,17 +21,18 @@ class FacebookPostScheduleType extends AbstractType
                 'label_attr' => ['class' => 'form-label text-center', 'for' => 'name'],
                 'attr' => ['class' => 'form-control']
             ])
-            ->add('facebookPage', TextType::class,
+            ->add('title', TextType::class,
             [
                 'label_attr' => ['class' => 'form-label text-center', 'for' => 'facebook_page'],
                 'attr' => ['class' => 'form-control']
             ])
-            ->add('aiPrompt', TextType::class,
+            ->add('postText', TextType::class,
             [
                 'label_attr' => ['class' => 'form-label text-center', 'for' => 'ai_prompt'],
                 'attr' => ['class' => 'form-control']
             ])
-            ->add('images', ChoiceType::class, [
+            ->add('mediaUrls', ChoiceType::class, [
+                // 'mapped' => false,
                 'choices' => array_column($options['images'], 'name', 'name'), // ['img1.jpg' => 'img1.jpg']
                 'multiple' => true,
                 'expanded' => true,
@@ -52,30 +51,13 @@ class FacebookPostScheduleType extends AbstractType
                         ];
                     }
             ])
-            ->add('publishAt', DateType::class, [
-                'widget' => 'single_text',
-                'input'  => 'datetime_immutable',
-                'model_timezone' => 'Europe/Berlin',
-                'view_timezone' => 'Europe/Berlin'
-            ])
-            ->add('startTime', TimeType::class, [
-                'widget' => 'single_text',
-                'placeholder' => 'Select a value',
-                'input'  => 'datetime_immutable',
-                'model_timezone' => 'Europe/Berlin',
-                'view_timezone' => 'Europe/Berlin',
-                'input_format' => 'H:i'
-            ])
-            ->add('repeatEvery', IntegerType::class, [
-                'label' => 'Repeat every (days):'
-            ]);
-
+        ;
     }
 
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => null,
+            'data_class' => TaskPost::class,
             'images' => [],
             'allow_extra_fields' => true
         ]);

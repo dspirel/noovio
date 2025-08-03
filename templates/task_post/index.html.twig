@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}TaskPost index{% endblock %}
+
+{% block body %}
+    <h1>TaskPost index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Title</th>
+                <th>Status</th>
+                <th>Posted</th>
+                <th>PostText</th>
+                <th>MediaUrls</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for task_post in task_posts %}
+            <tr>
+                <td>{{ task_post.id }}</td>
+                <td>{{ task_post.name }}</td>
+                <td>{{ task_post.title }}</td>
+                <td>{{ task_post.status ? 'Yes' : 'No' }}</td>
+                <td>{{ task_post.posted ? 'Yes' : 'No' }}</td>
+                <td>{{ task_post.postText }}</td>
+                <td>{{ task_post.mediaUrls ? task_post.mediaUrls|json_encode : '' }}</td>
+                <td>
+                    <a href="{{ path('app_task_post_show', {'id': task_post.id}) }}">show</a>
+                    <a href="{{ path('app_task_post_edit', {'id': task_post.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="8">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_task_post_new') }}">Create new</a>
+{% endblock %}

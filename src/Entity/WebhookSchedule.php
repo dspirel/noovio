@@ -18,10 +18,7 @@ class WebhookSchedule
 
     #[ORM\ManyToOne(inversedBy: 'webhookSchedules')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?user $owner = null;
-
-    #[ORM\Column]
-    private array $options = [];
+    private ?User $owner = null;
 
     #[ORM\Column]
     private array $data = [];
@@ -57,19 +54,6 @@ class WebhookSchedule
 
         return $this;
     }
-
-    public function getOptions(): array
-    {
-        return $this->options;
-    }
-
-    public function setOptions(array $options): static
-    {
-        $this->options = $options;
-
-        return $this;
-    }
-
     public function getData(): array
     {
         return $this->data;

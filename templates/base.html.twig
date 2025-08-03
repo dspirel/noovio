@@ -27,7 +27,8 @@
             {% if app.user %}
                 <a class="btn btn-outline-light" href="{{ path('app_home') }}">Dashboard</a>
                 <a class="btn btn-outline-light" href="{{ path('user_files') }}">My Files</a>
-                <a class="btn btn-outline-light" href="{{ path('app_scheduled_tasks_new') }}">FB</a>
+                <a class="btn btn-outline-light" href="{{ path('app_task_schedule_index') }}">My Schedules</a>
+                <a class="btn btn-outline-light" href="{{ path('app_task_post_index') }}">My Posts</a>
 
             {% endif %}
             </div>

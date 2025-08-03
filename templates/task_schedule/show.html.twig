@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}TaskSchedule{% endblock %}
+
+{% block body %}
+    <h1>TaskSchedule</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Name</th>
+                <td>{{ task_schedule.name }}</td>
+            </tr>
+            <tr>
+                <th>NextRunAt</th>
+                <td>{{ task_schedule.nextRunAt ? task_schedule.nextRunAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>RepeatEvery</th>
+                <td>{{ task_schedule.repeatEvery ? task_schedule.repeatEvery.d : '' }}</td>
+            </tr>
+            <tr>
+                <th>TargetPlatform</th>
+                <td>{{ task_schedule.targetPlatform }}</td>
+            </tr>
+            <tr>
+                <th>FacebookPage</th>
+                <td>{{ task_schedule.facebookPage }}</td>
+            </tr>
+            <tr>
+                <th>InstagramPage</th>
+                <td>{{ task_schedule.instagramPage }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_task_schedule_index') }}">back to list</a>
+
+    <a href="{{ path('app_task_schedule_edit', {'id': task_schedule.id}) }}">edit</a>
+
+    {{ include('task_schedule/_delete_form.html.twig') }}
+{% endblock %}
