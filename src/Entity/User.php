@@ -38,12 +38,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $password = null;
 
     /**
-     * @var Collection<int, WebhookSchedule>
-     */
-    #[ORM\OneToMany(targetEntity: WebhookSchedule::class, mappedBy: 'owner', orphanRemoval: true)]
-    private Collection $webhookSchedules;
-
-    /**
      * @var Collection<int, TaskSchedule>
      */
     #[ORM\OneToMany(targetEntity: TaskSchedule::class, mappedBy: 'owner', orphanRemoval: true)]
@@ -58,7 +52,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function __construct()
     {
-        $this->webhookSchedules = new ArrayCollection();
         $this->TaskSchedule = new ArrayCollection();
         $this->taskPosts = new ArrayCollection();
     }
@@ -154,36 +147,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function eraseCredentials(): void
     {
         // @deprecated, to be removed when upgrading to Symfony 8
-    }
-
-    /**
-     * @return Collection<int, WebhookSchedule>
-     */
-    public function getWebhookSchedules(): Collection
-    {
-        return $this->webhookSchedules;
-    }
-
-    public function addWebhookSchedule(WebhookSchedule $webhookSchedule): static
-    {
-        if (!$this->webhookSchedules->contains($webhookSchedule)) {
-            $this->webhookSchedules->add($webhookSchedule);
-            $webhookSchedule->setOwner($this);
-        }
-
-        return $this;
-    }
-
-    public function removeWebhookSchedule(WebhookSchedule $webhookSchedule): static
-    {
-        if ($this->webhookSchedules->removeElement($webhookSchedule)) {
-            // set the owning side to null (unless already changed)
-            if ($webhookSchedule->getOwner() === $this) {
-                $webhookSchedule->setOwner(null);
-            }
-        }
-
-        return $this;
     }
 
     /**

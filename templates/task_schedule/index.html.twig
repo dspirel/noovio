@@ -14,6 +14,7 @@
                 <th>Target Platform</th>
                 <th>Facebook Page</th>
                 <th>Instagram Page</th>
+                <th>Prepared posts</th>
                 <th>Actions</th>
             </tr>
         </thead>
@@ -26,9 +27,12 @@
                 <td>{{ task_schedule.targetPlatform }}</td>
                 <td>{{ task_schedule.facebookPage }}</td>
                 <td>{{ task_schedule.instagramPage }}</td>
+                <td>{{ task_schedule.postCount }}</td>
                 <td>
                     <a href="{{ path('app_task_schedule_show', {'id': task_schedule.id}) }}">show</a>
                     <a href="{{ path('app_task_schedule_edit', {'id': task_schedule.id}) }}">edit</a>
+                    <a href="{{ path('app_task_schedule_add_post', {'id': task_schedule.id}) }}">add post</a>
+                    <a href="{{ path('app_task_schedule_show_posts', {'id': task_schedule.id}) }}">show posts</a>
                 </td>
             </tr>
         {% else %}

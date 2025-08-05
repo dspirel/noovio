@@ -25,6 +25,18 @@ class TaskScheduleRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+
+    //     public function findNextRunnableTask(): ?WebhookSchedule
+    // {
+    // return $this->createQueryBuilder('t')
+    //     ->where('t.nextRunAt <= :now')
+    //     ->setParameter('now', new \DateTimeImmutable('now'))
+    //     ->orderBy('t.nextRunAt', 'ASC') // get the earliest one
+    //     ->setMaxResults(1)
+    //     ->getQuery()
+    //     ->getOneOrNullResult();
+    // }
+
     //    /**
     //     * @return TaskSchedule[] Returns an array of TaskSchedule objects
     //     */

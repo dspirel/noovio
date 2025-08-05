@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\TaskPostRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: TaskPostRepository::class)]
@@ -12,9 +14,6 @@ class TaskPost
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
-
-    #[ORM\ManyToOne(inversedBy: 'taskPosts')]
-    private ?TaskSchedule $taskSchedule = null;
 
     #[ORM\Column(length: 255)]
     private ?string $name = null;
@@ -38,21 +37,26 @@ class TaskPost
     #[ORM\JoinColumn(nullable: false)]
     private ?User $owner = null;
 
+    /**
+     * @var Collection<int, TaskSchedule>
+     */
+    #[ORM\ManyToMany(targetEntity: TaskSchedule::class, inversedBy: 'taskPosts')]
+    private Collection $taskSchedules;
+
+    #[ORM\Column]
+    private ?\DateTimeImmutable $createdAt = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?\DateTimeImmutable $updatedAt = null;
+
+    public function __construct()
+    {
+        $this->taskSchedules = new ArrayCollection();
+    }
+
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getTaskSchedule(): ?TaskSchedule
-    {
-        return $this->taskSchedule;
-    }
-
-    public function setTaskSchedule(?TaskSchedule $taskSchedule): static
-    {
-        $this->taskSchedule = $taskSchedule;
-
-        return $this;
     }
 
     public function getName(): ?string
@@ -135,6 +139,57 @@ class TaskPost
     public function setOwner(?User $owner): static
     {
         $this->owner = $owner;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, TaskSchedule>
+     */
+    public function getTaskSchedules(): Collection
+    {
+        return $this->taskSchedules;
+    }
+
+    public function addTaskSchedule(TaskSchedule $taskSchedule): static
+    {
+        if (!$this->taskSchedules->contains($taskSchedule)) {
+            $this->taskSchedules->add($taskSchedule);
+            $taskSchedule->addTaskPost($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTaskSchedule(TaskSchedule $taskSchedule): static
+    {
+        if ($this->taskSchedules->removeElement($taskSchedule)) {
+            $taskSchedule->removeTaskPost($this);
+        }
+        return $this;
+    }
+
+    public function getCreatedAt(): ?\DateTimeImmutable
+    {
+        return $this->createdAt;
+    }
+
+    public function setCreatedAt(\DateTimeImmutable $createdAt): static
+    {
+        //TODO: ADD DEFAULT TIMEZONE???
+        $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    public function getUpdatedAt(): ?\DateTimeImmutable
+    {
+        return $this->updatedAt;
+    }
+
+    public function setUpdatedAt(?\DateTimeImmutable $updatedAt): static
+    {
+        $this->updatedAt = $updatedAt;
 
         return $this;
     }

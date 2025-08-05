@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20250801065741 extends AbstractMigration
+final class Version20250805110655 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -20,17 +20,17 @@ final class Version20250801065741 extends AbstractMigration
     public function up(Schema $schema): void
     {
         // this up() migration is auto-generated, please modify it to your needs
-        $this->addSql('ALTER TABLE task_post ADD owner_id INT NOT NULL');
-        $this->addSql('ALTER TABLE task_post ADD CONSTRAINT FK_2939F8F67E3C61F9 FOREIGN KEY (owner_id) REFERENCES "user" (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
-        $this->addSql('CREATE INDEX IDX_2939F8F67E3C61F9 ON task_post (owner_id)');
+        $this->addSql('ALTER TABLE task_post ADD created_at TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL');
+        $this->addSql('ALTER TABLE task_post ADD updated_at TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT NULL');
+        $this->addSql('COMMENT ON COLUMN task_post.created_at IS \'(DC2Type:datetime_immutable)\'');
+        $this->addSql('COMMENT ON COLUMN task_post.updated_at IS \'(DC2Type:datetime_immutable)\'');
     }
 
     public function down(Schema $schema): void
     {
         // this down() migration is auto-generated, please modify it to your needs
         $this->addSql('CREATE SCHEMA public');
-        $this->addSql('ALTER TABLE task_post DROP CONSTRAINT FK_2939F8F67E3C61F9');
-        $this->addSql('DROP INDEX IDX_2939F8F67E3C61F9');
-        $this->addSql('ALTER TABLE task_post DROP owner_id');
+        $this->addSql('ALTER TABLE task_post DROP created_at');
+        $this->addSql('ALTER TABLE task_post DROP updated_at');
     }
 }

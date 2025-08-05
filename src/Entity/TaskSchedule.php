@@ -40,7 +40,7 @@ class TaskSchedule
     /**
      * @var Collection<int, TaskPost>
      */
-    #[ORM\OneToMany(targetEntity: TaskPost::class, mappedBy: 'taskSchedule')]
+    #[ORM\ManyToMany(targetEntity: TaskPost::class, mappedBy: 'taskSchedules')]
     private Collection $taskPosts;
 
     public function __construct()
@@ -149,7 +149,7 @@ class TaskSchedule
     {
         if (!$this->taskPosts->contains($taskPost)) {
             $this->taskPosts->add($taskPost);
-            $taskPost->setTaskSchedule($this);
+            $taskPost->addTaskSchedule($this);
         }
 
         return $this;
@@ -158,12 +158,10 @@ class TaskSchedule
     public function removeTaskPost(TaskPost $taskPost): static
     {
         if ($this->taskPosts->removeElement($taskPost)) {
-            // set the owning side to null (unless already changed)
-            if ($taskPost->getTaskSchedule() === $this) {
-                $taskPost->setTaskSchedule(null);
-            }
+            $taskPost->removeTaskSchedule($this);
         }
 
         return $this;
     }
+
 }

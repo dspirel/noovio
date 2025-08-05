@@ -6,6 +6,7 @@ use App\Entity\TaskPost;
 use App\Form\TaskPostType;
 use App\Repository\TaskPostRepository;
 use App\Service\GoogleCloudStorageService;
+use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -27,9 +28,11 @@ final class TaskPostController extends AbstractController
         ]);
     }
 
+    //TODO: GENERATE POST WITH N8N
     #[Route('/generate', name: 'app_task_post_generate', methods: ['GET', 'POST'])]
     public function generate(TaskPostRepository $taskPostRepository, Request $request, EntityManagerInterface $entityManager): Response
     {
+        //add createdAt
         return $this->render('task_post/index.html.twig', [
             'task_posts' => $taskPostRepository->findAll(),
         ]);
@@ -52,6 +55,7 @@ final class TaskPostController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $taskPost->setOwner($user);
             $taskPost->setPosted(false);
+            $taskPost->setCreatedAt(new DateTimeImmutable('now', new \DateTimeZone('Europe/Zagreb')));
             // dd($taskPost);
 
             $entityManager->persist($taskPost);
@@ -65,7 +69,7 @@ final class TaskPostController extends AbstractController
             'form' => $form,
         ]);
     }
-    //TODO: ADD POST TO SCHEDULE!!!
+
     #[Route('/{id}', name: 'app_task_post_show', methods: ['GET'])]
     public function show(TaskPost $taskPost): Response
     {
@@ -95,6 +99,16 @@ final class TaskPostController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            //check if changes are made,than set updatedAt accordingly
+            $uow = $entityManager->getUnitOfWork();
+            $uow->computeChangeSets(); // make sure changesets are computed
+
+            $changes = $uow->getEntityChangeSet($taskPost);
+
+            if (!empty($changes)) {
+                $taskPost->setUpdatedAt(new DateTimeImmutable('now', new \DateTimeZone('Europe/Zagreb')));
+            }
+
             $entityManager->flush();
 
             return $this->redirectToRoute('app_task_post_index', [], Response::HTTP_SEE_OTHER);
